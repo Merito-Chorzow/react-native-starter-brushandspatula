@@ -16,7 +16,7 @@ export default function OnboardingScreenPage() {
 
       <Button
         title="Get Started!"
-        //tu bedzie routing do location page
+        onPress={() => router.push('/locationScreen')}
       />
     </View>
   );
