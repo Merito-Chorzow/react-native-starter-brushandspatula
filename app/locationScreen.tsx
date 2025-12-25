@@ -1,4 +1,5 @@
 import * as Location from "expo-location";
+import { router } from "expo-router";
 import React from "react";
 import { Button, Text, View } from "react-native";
 
@@ -42,7 +43,9 @@ export default function LocationScreenPage() {
 
       <Button
         title="Go to Notes"
-        //todo tu bedzie routing do notes page
+        onPress={() => {
+          router.push("/notesScreen");
+        }}
       />
     </View>
   );
