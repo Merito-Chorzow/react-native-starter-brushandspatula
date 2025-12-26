@@ -1,9 +1,8 @@
+import NetInfo from "@react-native-community/netinfo";
 import * as Location from "expo-location";
 import { router } from "expo-router";
-import React, { use } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
-import { useEffect, useState } from "react";
-import NetInfo from "@react-native-community/netinfo";
 
 export default function LocationScreenPage() {
   const [location, setLocation] = React.useState<string | null>(null);
@@ -20,16 +19,22 @@ export default function LocationScreenPage() {
   }, []);
 
   async function fetchLocation() {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied. Try again.");
+        return;
+      }
 
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(
-      `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`
-    );
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(
+        `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`
+      );
+    } catch (error) {
+      setErrorMsg(
+        "Error fetching location. Check your permissions and try again."
+      );
+    }
   }
 
   let displayMessage = "Loading location...";
@@ -39,7 +44,11 @@ export default function LocationScreenPage() {
     displayMessage = JSON.stringify(location);
   }
 
-  {!isOnline && (displayMessage = "You are offline. Please check your internet connection.");}
+  {
+    !isOnline &&
+      (displayMessage =
+        "You are offline. Please check your internet connection.");
+  }
 
   return (
     <View style={{ flex: 1, padding: 24, marginTop: 20, gap: 15 }}>
@@ -53,7 +62,7 @@ export default function LocationScreenPage() {
         }}
       />
 
-      <Text style={{ fontSize: 18 }}>{displayMessage}</Text>
+      <Text style={{ fontSize: 20 }}>{displayMessage}</Text>
 
       <Button
         title="Go to Notes"

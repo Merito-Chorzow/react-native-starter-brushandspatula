@@ -16,7 +16,7 @@ export default function OnboardingScreenPage() {
     };
   }, []);
 
-  let displayMessage = "Loading";
+  let displayMessage = "";
 
   {
     !isOnline &&

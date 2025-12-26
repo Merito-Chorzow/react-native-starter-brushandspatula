@@ -14,7 +14,7 @@ export default function NotesScreenPage() {
     };
   }, []);
 
-  let displayMessage = "Loading...";
+  let displayMessage = "";
 
   {
     !isOnline &&
